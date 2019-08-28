@@ -1,0 +1,57 @@
+/*Attendance CSS*/
+
+body {
+    text-align: center;
+}
+
+header {
+    width: 100%;
+}
+
+#Logout {
+    float: right;
+}
+
+header button {
+    float: left;
+}
+
+.wrap {
+    padding: 50px 200px;
+}
+
+#content {
+    width: 100%;
+    margin-top: 60px;
+}
+
+.title {
+    font-size: 2.8em;
+}
+
+table {
+    width: 600px;
+    margin: 0 auto;
+    border-color: white;
+    border-radius: 0.5em;
+    overflow: hidden;
+}
+
+th, td {
+    width: 100px;
+    text-align: center;
+}
+
+th {
+    background: rgba(38,166,154,0.7);
+    color: white;
+    font-size: 1.2em;
+}
+
+tr:nth-child(odd) {
+    background: rgba(38,166,154,0.3);
+}
+
+tr:nth-child(even) {
+    background: rgba(38,166,154,0.1);
+}

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: och
+ * Date: 2019-04-05
+ * Time: 오후 2:22
+ */
+error_reporting(E_ALL);
+ini_set('display_errors',1);
+
+require ('../../lib/db.php');
+
+$stmt = $PDO->prepare("select * from subjecctcode");
+$stmt->execute();
+
+if ($stmt->rowCount() > 0)
+{
+    $data = array();
+
+    while($row=$stmt->fetch(PDO::FETCH_ASSOC))
+    {
+        extract($row);
+
+        array_push($data,
+            array('name'=>$name,
+                'code'=>$code,
+                'subject'=>$subject,
+                'subjectcode'=>$subjectcode
+            ));
+    }
+
+    header('Content-Type: application/json; charset=utf8');
+    $json = json_encode(array("subjectcode"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
+    echo $json;
+}
+?>

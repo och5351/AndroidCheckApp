@@ -1,0 +1,42 @@
+<?php
+
+session_start();
+
+if(empty($_SESSION)){
+    echo '<script>alert("올바른 접근이 아닙니다.");history.go(-1);</script>';
+}
+
+require ('../lib/db.php');
+
+$subject = $_POST['subject'];
+
+$query=$PDO->prepare("select keycode from web.qr where subject = :subject and date = now()");
+$query->bindParam(':subject',$subject);
+$query->execute();
+$key=$query->fetch();
+
+if(boolval($key)==false){
+    $query=$PDO->prepare("select name,code,subjectcode from web.subjectcode where subject = :subject");
+    $query->bindParam(':subject', $subject);
+    $query->execute();
+    $user=$query->fetchAll();
+
+    $now = new DateTime();
+    $date = $now->format('Y-m-d H:i:s');
+    $key = sha1(md5($date));
+
+    $name = $user[0]['name'];
+    $code = $user[0]['code'];
+    $subjectcode = $user[0]['subjectcode'];
+
+    $query=$PDO->prepare("insert into web.qr values(:name, :code, :subject, :subjectcode, now(), :key)");
+    $query->bindParam(':name', $name);
+    $query->bindParam(':code', $code);
+    $query->bindParam(':subject', $subject);
+    $query->bindParam(':subjectcode', $subjectcode);
+    $query->bindParam(':key', $key);
+    $query->execute();
+    $PDO->query("commit");
+}
+
+echo $key;

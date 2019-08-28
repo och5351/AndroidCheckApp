@@ -1,0 +1,68 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+include('../../lib/db.php');
+
+//임시 학번
+$studnetID = 21759103;
+$tmpdate = "2019-03-28";
+$today = date("Y-m-d");
+
+$android = strpos($_SERVER['HTTP_USER_AGENT'], "Android");
+$query = $_POST['query'];
+
+//$sql = "select * from attendance where code='$studnetID' AND date='$tmpdate' ORDER BY classtime ASC";
+$stmt = $PDO->prepare($query);
+$stmt->execute();
+
+$data = array();
+
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+    extract($row);
+
+    $yntext = "미출결";
+
+    if ($row['yn'] == 1) {
+        $yntext = "출석";
+    } else {
+        $yntext = "결석";
+    }
+
+    //과목명 구하기
+    $tempSubjectcode = $row["subjectcode"];
+    $subjectCodeResult = $PDO->query("select subject from subjectcode where subjectcode = '$tempSubjectcode'");
+    foreach ($subjectCodeResult as $rows) {
+        $subjectCode = $rows['subject'];
+    }
+
+    //문자열로 변환하고 문자 넣기
+    $timetext = (string)$row["classtime"];
+    $timetext = substr_replace($timetext,':',2,0);
+    $timetext = substr_replace($timetext,'~',5,0);
+    $timetext = substr_replace($timetext,':',8,0);
+
+    array_push($data,
+        array('classtime' => $timetext,
+            'subjectcode' => $subjectCode,
+            'yn' => $yntext
+        ));
+}
+
+
+//안드로이드 전달용 JSON포맷
+if (!$android) {
+    //echo "<pre>";
+    //print_r($data);
+    //echo '</pre>';
+
+    header('Content-Type: application/json; charset=utf8');
+    $json = json_encode(array("attendance" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    echo $json;
+} else {
+    header('Content-Type: application/json; charset=utf8');
+    $json = json_encode(array("attendance" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    echo $json;
+}
+?>

@@ -1,0 +1,49 @@
+<?php
+
+session_start();
+
+require ('lib/db.php');
+
+$key = $_GET['key'];
+$machine = $_GET['machine'];
+$phone = $_GET['phone'];
+
+if(empty($_GET)){
+    echo '<script>alert("올바른 접근이 아닙니다.");history.go(-1);</script>';
+}
+
+?>
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>GNTech QR Professor</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/lib/materialize.min.css">
+    <script src="/lib/jquery-3.3.1.min.js"></script>
+    <script src="/lib/materialize.min.js"></script>
+    <style>
+        .position {
+            margin-top: 10%;
+        }
+    </style>
+</head>
+<body>
+<div class="row position">
+    <div class="col s12 m6">
+        <div class="card light-blue">
+            <div class="card-content white-text">
+                <span class="card-title">인증키</span>
+                <p><?=$key?></p>
+            </div>
+            <div class="card-action">
+                <p>기기정보 : <?=$machine?></p>
+                <p>휴대폰번호 : <?=$phone?></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

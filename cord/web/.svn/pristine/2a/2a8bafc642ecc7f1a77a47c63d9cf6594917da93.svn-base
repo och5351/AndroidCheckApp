@@ -1,0 +1,32 @@
+div.all{/*전체 페이지 padding 사이즈*/
+    padding-top : 50px;
+    padding-bottom : 50px;
+    padding-left : 200px;
+    padding-right : 200px;
+}
+.title{/*페이지 제목*/
+    font-size:2.5em;
+}
+.subject{/*과목별출석부*/
+    font-size:1.8em;
+    position:relative;
+}
+p.relative{/*과목이름*/
+    position:relative;
+    font-size:1.5em;
+}
+.logoutbox {/*오른쪽 위 로그아웃 구문*/
+    position: absolute;
+    font-size: 1em;
+    left: 67%;
+}
+div.middle {/*과목 출력 필드 padding 사이즈*/
+    padding-bottom: 20px;
+    padding-left: 150px;
+    padding-right: 150px;
+}
+button.position{/*조회 버튼 위치 조정*/
+    position: relative;
+    top: 60px;
+    left: 86%;
+}
